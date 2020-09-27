@@ -62,4 +62,5 @@ protected function getCommands()
 ## Log
 
 **[2020-09-24]** *发布v1.0.0版本*
+
 **[2020-09-27]** *发布v1.0.1版本：修复artisan指令在生产环境的隐患*
