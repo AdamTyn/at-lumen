@@ -15,6 +15,6 @@ $system = [
 
 $v1 = app_path('V1/codes.php');
 
-$v1 = include_once $v1;
+$v1 = include $v1;
 
 return ($system + $v1);
