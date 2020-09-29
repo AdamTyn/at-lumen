@@ -7,3 +7,4 @@ Homestead.yaml
 /composer.lock
 /public/storage
 /storage/*.key
+/bootstrap/cache/

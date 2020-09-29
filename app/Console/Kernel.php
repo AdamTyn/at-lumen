@@ -35,9 +35,12 @@ class Kernel extends ConsoleKernel
     protected function getCommands()
     {
         if (config('app.env') !== 'production') {
-            $this->commands[] = \AdamTyn\Lumen\Artisan\StorageLinkCommand::class;
             $this->commands[] = \AdamTyn\Lumen\Artisan\KeyGenerateCommand::class;
         }
+
+        $this->commands[] = \AdamTyn\Lumen\Artisan\StorageLinkCommand::class;
+        $this->commands[] = \AdamTyn\Lumen\Artisan\ConfigCacheCommand::class;
+        $this->commands[] = \AdamTyn\Lumen\Artisan\ConfigClearCommand::class;
 
         return parent::getCommands();
     }

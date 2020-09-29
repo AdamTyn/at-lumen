@@ -30,6 +30,8 @@
         "laravel/lumen-framework": "^7.2.2",
         "adamtyn/lumen-artisan-key-generate": "^1.0.1",
         "adamtyn/lumen-artisan-storage-link": "^1.0.0",
+        "adamtyn/lumen-artisan-config-cache": "^1.0.1",
+        "adamtyn/lumen-artisan-config-clear": "^1.0.1",
         "ext-json": "*"
     },
     "require-dev": {
