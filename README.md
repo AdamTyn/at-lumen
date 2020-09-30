@@ -3,7 +3,7 @@
 ```text
 @author AdamTyn
 @description 一个更适合开箱即用的 Lumen 封装
-@updated_at 2020-09-28
+@updated_at 2020-09-29
 ```
 
 ## Usage
@@ -68,4 +68,6 @@ protected function getCommands()
 **[2020-09-27]** *发布v1.0.1版本：修复artisan指令在生产环境的隐患*
 
 **[2020-09-28]** *发布v1.1.0版本：新增 `php artisan config:cache` & `php artisan config:clear` 两个artisan指令*
+
+**[2020-09-29]** *发布v1.2.0版本：添加框架入口核心类 `bootstrap/core.php` 文件*
 
