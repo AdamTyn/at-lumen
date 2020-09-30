@@ -69,5 +69,22 @@ protected function getCommands()
 
 **[2020-09-28]** *发布v1.1.0版本：新增 `php artisan config:cache` & `php artisan config:clear` 两个artisan指令*
 
-**[2020-09-29]** *发布v1.2.0版本：添加框架入口核心类 `bootstrap/core.php` 文件*
+**[2020-09-29]** *发布v1.2.0版本：添加框架入口核心类 `bootstrap/core.php` 文件，支持加载配置缓存文件 `bootstrap/cache/config.php`了!*
+
+```php
+<?php
+
+use Laravel\Lumen\Application as Lumen;
+
+final class Core extends Lumen
+{
+  public function __construct($basePath = null)
+  {
+    // 加载配置缓存文件
+    $this->loadCachedConfig();
+
+    parent::__construct($basePath);
+  }
+}
+```
 
