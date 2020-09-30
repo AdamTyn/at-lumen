@@ -17,9 +17,16 @@ require_once __DIR__ . '/../vendor/autoload.php';
 |
 */
 
-$app = new Laravel\Lumen\Application(
-    dirname(__DIR__)
-);
+$entrance = __DIR__ . '/core.php';
+
+if (file_exists($entrance)) {
+    include_once $entrance;
+    $app = new Core(dirname(__DIR__));
+} else {
+    $app = new Laravel\Lumen\Application(
+        dirname(__DIR__)
+    );
+}
 
 $app->withFacades();
 
