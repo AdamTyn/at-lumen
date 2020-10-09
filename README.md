@@ -78,13 +78,43 @@ use Laravel\Lumen\Application as Lumen;
 
 final class Core extends Lumen
 {
-  public function __construct($basePath = null)
-  {
-    // 加载配置缓存文件
-    $this->loadCachedConfig();
+    public function __construct($basePath = null)
+    {
+        // 加载配置缓存文件
+        $this->loadCachedConfig();
 
-    parent::__construct($basePath);
-  }
+        parent::__construct($basePath);
+    }
+}
+```
+
+**[2020-10-09]** *发布v1.2.1版本：新增框架入口核心类 `bootstrap/core.php` 文件，判断是否读取了配置缓存文件*
+
+```php
+<?php
+
+use Laravel\Lumen\Application as Lumen;
+
+final class Core extends Lumen
+{
+    public function configure($name)
+    {
+        if (isset($this->loadedConfigurations[$name])) {
+            return;
+        }
+
+        $this->loadedConfigurations[$name] = $this->cachedConfig;
+
+        if (!$this->cachedConfig) {
+            $this->loadedConfigurations[$name] = true;
+
+            $path = $this->getConfigurationPath($name);
+
+            if ($path) {
+                $this->make('config')->set($name, require $path);
+            }
+        }
+    }
 }
 ```
 
