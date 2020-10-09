@@ -8,8 +8,19 @@ use Laravel\Lumen\Application as Lumen;
  */
 final class Core extends Lumen
 {
+    /**
+     * 是否读取了配置缓存文件
+     * @var bool
+     */
+    private $cachedConfig = false;
+
+    /**
+     * Core constructor.
+     * @param $basePath
+     */
     public function __construct($basePath = null)
     {
+        // 加载配置缓存文件
         $this->loadCachedConfig();
 
         parent::__construct($basePath);
@@ -21,15 +32,48 @@ final class Core extends Lumen
      */
     private function loadCachedConfig()
     {
+        if ($this->cachedConfig) {
+            return;
+        }
+
         $cache = $this->basePath('bootstrap/cache/config.php');
 
         if (file_exists($cache)) {
             $config = require $cache;
 
+            $this->cachedConfig = true;
+
+            $repository = $this->make('config');
+
             foreach ($config as $name => $value) {
                 $this->loadedConfigurations[$name] = true;
 
-                empty($value) ?: $this->make('config')->set($name, $value);
+                empty($value) ?: $repository->set($name, $value);
+            }
+        }
+    }
+
+    /**
+     * @author AdamTyn
+     * @description 加载指定配置
+     *
+     * @param string $name
+     */
+    public function configure($name)
+    {
+        if (isset($this->loadedConfigurations[$name])) {
+            return;
+        }
+
+        $this->loadedConfigurations[$name] = $this->cachedConfig;
+
+        if (!$this->cachedConfig) {
+            $this->loadedConfigurations[$name] = true;
+
+            $path = $this->getConfigurationPath($name);
+
+            if ($path) {
+                $this->make('config')->set($name, require $path);
             }
         }
     }
@@ -53,6 +97,18 @@ final class Core extends Lumen
     }
 
     /**
+     * @return string
+     */
+    protected function getLanguagePath()
+    {
+        if (is_dir($langPath = $this->basePath('resources/lang'))) {
+            return $langPath;
+        } else {
+            return $this->frameworkPath('resources/lang');
+        }
+    }
+
+    /**
      * @author AdamTyn
      * @description 获取指定配置文件的绝对路径
      *
@@ -66,7 +122,7 @@ final class Core extends Lumen
 
             if (file_exists($appConfigDir)) {
                 return $appConfigDir;
-            } elseif (file_exists($path = $this->frameworkConfigurationPath()) . DIRECTORY_SEPARATOR) {
+            } elseif (file_exists($path = $this->frameworkPath('config')) . DIRECTORY_SEPARATOR) {
                 return $path;
             }
         } else {
@@ -74,7 +130,7 @@ final class Core extends Lumen
 
             if (file_exists($appConfigPath)) {
                 return $appConfigPath;
-            } elseif (file_exists($path = $this->frameworkConfigurationPath() . DIRECTORY_SEPARATOR . $name . '.php')) {
+            } elseif (file_exists($path = $this->frameworkPath('config') . DIRECTORY_SEPARATOR . $name . '.php')) {
                 return $path;
             }
         }
@@ -84,12 +140,17 @@ final class Core extends Lumen
 
     /**
      * @author AdamTyn
-     * @description 获取Lumen框架兜底config目录路径
+     * @description 获取Lumen框架兜底目录路径
      *
+     * @param string
      * @return string
      */
-    private function frameworkConfigurationPath()
+    private function frameworkPath(string $name = '')
     {
-        return $this->basePath('vendor/laravel/lumen-framework/config');
+        $frameworkPath = $this->basePath('vendor/laravel/lumen-framework');
+
+        return empty($name) ?
+            $frameworkPath :
+            $frameworkPath . DIRECTORY_SEPARATOR . $name;
     }
 }
