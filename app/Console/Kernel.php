@@ -41,6 +41,8 @@ class Kernel extends ConsoleKernel
         $this->commands[] = \AdamTyn\Lumen\Artisan\StorageLinkCommand::class;
         $this->commands[] = \AdamTyn\Lumen\Artisan\ConfigCacheCommand::class;
         $this->commands[] = \AdamTyn\Lumen\Artisan\ConfigClearCommand::class;
+        $this->commands[] = \AdamTyn\Lumen\Artisan\UpCommand::class;
+        $this->commands[] = \AdamTyn\Lumen\Artisan\DownCommand::class;
 
         return parent::getCommands();
     }
