@@ -3,7 +3,7 @@
 ```text
 @author AdamTyn
 @description 一个更适合开箱即用的 Lumen 封装
-@updated_at 2020-09-29
+@updated_at 2020-10-28
 ```
 
 ## Usage
@@ -19,6 +19,8 @@
 | [adamtyn/lumen-artisan-key-generate](https://github.com/AdamTyn/lumen-artisan-key-generate) | 移植Laravel的 `php artisan key:generate` [重置AppKey]指令到Lumen |    ✔     | [v1.0.0](https://github.com/AdamTyn/at-lumen/tree/v1.0.0) |
 | [adamtyn/lumen-artisan-config-cache](https://github.com/AdamTyn/lumen-artisan-config-cache) | 移植Laravel的 `php artisan config:cache` [创建配置缓存文件]指令到Lumen |    ✔     | [v1.1.0](https://github.com/AdamTyn/at-lumen/tree/v1.1.0) |
 | [adamtyn/lumen-artisan-config-clear](https://github.com/AdamTyn/lumen-artisan-config-clear) | 移植Laravel的 `php artisan config:clear` [清除配置缓存文件]指令到Lumen |    ✔     | [v1.1.0](https://github.com/AdamTyn/at-lumen/tree/v1.1.0) |
+| [adamtyn/lumen-artisan-down](https://github.com/AdamTyn/lumen-artisan-down) |  移植Laravel的 `php artisan down` [进入维护模式]指令到Lumen  |    ✔     | [v1.3.0](https://github.com/AdamTyn/at-lumen/tree/v1.3.0) |
+| [adamtyn/lumen-artisan-up](https://github.com/AdamTyn/lumen-artisan-up) |   移植Laravel的 `php artisan up` [退出维护模式]指令到Lumen   |    ✔     | [v1.3.0](https://github.com/AdamTyn/at-lumen/tree/v1.3.0) |
 | [adamtyn/lumen-artisan-make-job](https://github.com/AdamTyn/lumen-artisan-make-job) | 移植Laravel的 `php artisan make:job` [快速创建任务]指令到Lumen |    ✖     | [v1.0.0](https://github.com/AdamTyn/at-lumen/tree/v1.0.0) |
 | [adamtyn/lumen-artisan-make-model](https://github.com/AdamTyn/lumen-artisan-make-model) | 移植Laravel的 `php artisan make:model` [快速创建模型] 指令到Lumen |    ✖     | [v1.0.0](https://github.com/AdamTyn/at-lumen/tree/v1.0.0) |
 | [adamtyn/lumen-artisan-serve](https://github.com/AdamTyn/lumen-artisan-artisan-serve) | 移植Laravel的 `php artisan serve` [快速启动服务]指令到**Lumen** |    ✖     | [v1.0.0](https://github.com/AdamTyn/at-lumen/tree/v1.0.0) |
@@ -41,24 +43,31 @@ APP_LOCALE=zh_cn
 # has more...
 ```
 
-6. 特别的，如果开发时用到了上述表格中的部分 `require-dev` 依赖，那么在生产环境的代码中一定要 **判断代码环境**
+5. 特别的，如果开发时用到了上述表格中的部分 `require-dev` 依赖，那么在生产环境的代码中一定要 **判断代码环境**
 
 ```php
 <?php
 
-protected function getCommands()
+class Kernel extends ConsoleKernel
 {
-  if (config('app.env') === 'local') {
-    $this->commands[] = \AdamTyn\Lumen\Artisan\ServeCommand::class;
-    $this->commands[] = \AdamTyn\Lumen\Artisan\JobMakeCommand::class;
-    $this->commands[] = \AdamTyn\Lumen\Artisan\ModelMakeCommand::class;
-  }
+    protected function getCommands()
+    {
+        if (config('app.env') !== 'production') {
+            $this->commands[] = \AdamTyn\Lumen\Artisan\KeyGenerateCommand::class;
+        }
 
-  return parent::getCommands();
+        $this->commands[] = \AdamTyn\Lumen\Artisan\StorageLinkCommand::class;
+        $this->commands[] = \AdamTyn\Lumen\Artisan\ConfigCacheCommand::class;
+        $this->commands[] = \AdamTyn\Lumen\Artisan\ConfigClearCommand::class;
+        $this->commands[] = \AdamTyn\Lumen\Artisan\UpCommand::class;
+        $this->commands[] = \AdamTyn\Lumen\Artisan\DownCommand::class;
+
+        return parent::getCommands();
+    }
 }
 ```
 
-7. 实际上，核心文件都应该 **针对不同代码环境有不同的逻辑**
+6. 实际上，核心文件都应该 **针对不同代码环境有不同的逻辑**
 
 
 ## Log
@@ -117,4 +126,6 @@ final class Core extends Lumen
     }
 }
 ```
+
+**[2020-10-28]** *发布v1.3.0版本：添加【检查维护模式】CheckForMaintenanceMode中间件，支持 Laravel 【维护模式】相关的artisan指令*
 
