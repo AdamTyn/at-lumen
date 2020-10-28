@@ -64,7 +64,9 @@ $app->singleton(
 |
 */
 
+// 注册状态码配置文件
 $app->configure('codes');
+// 注册阀门开关配置文件
 $app->configure('switcher');
 
 /*
@@ -78,14 +80,16 @@ $app->configure('switcher');
 |
 */
 
-// $app->middleware([]);
+$app->middleware([
+    App\Middleware\CheckForMaintenanceMode::class // 检查维护模式中间件
+]);
 
 $app->routeMiddleware([
     'auth' => App\Middleware\Authenticate::class,
     'form' => App\Middleware\Form::class,
     'logger' => App\Middleware\Logger::class,
     'switcher' => App\Middleware\Switcher::class,
-    'throttle' => App\Middleware\Throttle::class
+    'throttle' => App\Middleware\Throttle::class // 限流中间件
 ]);
 
 /*
