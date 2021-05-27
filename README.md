@@ -3,7 +3,7 @@
 ```text
 @author AdamTyn
 @description 一个更适合开箱即用的 Lumen 封装
-@updated_at 2020-10-28
+@updated_at 2021-05-27
 ```
 
 ## Usage
@@ -72,30 +72,9 @@ class Kernel extends ConsoleKernel
 
 ## Log
 
-**[2020-09-24]** *发布v1.0.0版本*
+**[2021-05-27]** *发布v1.4.0版本：添加【模型抽象基类】BaseModel文件*；优化配置文件，精简不常用的配置项
 
-**[2020-09-27]** *发布v1.0.1版本：修复artisan指令在生产环境的隐患*
-
-**[2020-09-28]** *发布v1.1.0版本：新增 `php artisan config:cache` & `php artisan config:clear` 两个artisan指令*
-
-**[2020-09-29]** *发布v1.2.0版本：添加框架入口核心类 `bootstrap/core.php` 文件，支持加载配置缓存文件 `bootstrap/cache/config.php`了!*
-
-```php
-<?php
-
-use Laravel\Lumen\Application as Lumen;
-
-final class Core extends Lumen
-{
-    public function __construct($basePath = null)
-    {
-        // 加载配置缓存文件
-        $this->loadCachedConfig();
-
-        parent::__construct($basePath);
-    }
-}
-```
+**[2020-10-28]** *发布v1.3.0版本：添加【检查维护模式】CheckForMaintenanceMode中间件，支持 Laravel 【维护模式】相关的artisan指令*
 
 **[2020-10-09]** *发布v1.2.1版本：新增框架入口核心类 `bootstrap/core.php` 文件，判断是否读取了配置缓存文件*
 
@@ -127,5 +106,27 @@ final class Core extends Lumen
 }
 ```
 
-**[2020-10-28]** *发布v1.3.0版本：添加【检查维护模式】CheckForMaintenanceMode中间件，支持 Laravel 【维护模式】相关的artisan指令*
+**[2020-09-29]** *发布v1.2.0版本：添加框架入口核心类 `bootstrap/core.php` 文件，支持加载配置缓存文件 `bootstrap/cache/config.php`了!*
 
+```php
+<?php
+
+use Laravel\Lumen\Application as Lumen;
+
+final class Core extends Lumen
+{
+    public function __construct($basePath = null)
+    {
+        // 加载配置缓存文件
+        $this->loadCachedConfig();
+
+        parent::__construct($basePath);
+    }
+}
+```
+
+**[2020-09-28]** *发布v1.1.0版本：新增 `php artisan config:cache` & `php artisan config:clear` 两个artisan指令*
+
+**[2020-09-27]** *发布v1.0.1版本：修复artisan指令在生产环境的隐患*
+
+**[2020-09-24]** *发布v1.0.0版本*
