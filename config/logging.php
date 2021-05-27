@@ -35,6 +35,7 @@ return [
     */
 
     'channels' => [
+        // 路由请求日志
         'router' => [
             'driver' => 'daily',
             'path' => storage_path('logs/router.log'),
@@ -58,24 +59,6 @@ return [
             'path' => storage_path('logs/lumen.log'),
             'level' => 'debug',
             'days' => 14,
-        ],
-
-        'slack' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Lumen Log',
-            'emoji' => ':boom:',
-            'level' => 'critical',
-        ],
-
-        'papertrail' => [
-            'driver' => 'monolog',
-            'level' => 'debug',
-            'handler' => SyslogUdpHandler::class,
-            'handler_with' => [
-                'host' => env('PAPERTRAIL_URL'),
-                'port' => env('PAPERTRAIL_PORT'),
-            ],
         ],
 
         'stderr' => [

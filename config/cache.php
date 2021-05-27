@@ -72,7 +72,7 @@ return [
 
         'redis' => [
             'driver' => 'redis',
-            'connection' => env('CACHE_REDIS_CONNECTION', 'default'),
+            'connection' => env('CACHE_REDIS_CONNECTION', 'cache'),
         ],
 
     ],
@@ -90,7 +90,7 @@ return [
 
     'prefix' => env(
         'CACHE_PREFIX',
-        Str::slug(env('APP_NAME', 'lumen'), '_') . '_cache'
+        Str::slug(env('APP_NAME', 'AT-Lumen'), '_') . '_cache'
     ),
 
 ];
